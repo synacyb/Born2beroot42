@@ -12,6 +12,10 @@ Dusage_percentage=$(df -H --total | grep "total" | awk  '{printf("%.f", ($3/$2)*
 cpu_load=$(top -bn2 | grep "%Cpu(s)" | awk 'NR==2'| awk '{print $2 "%"}')
 last_boot=$(who -b | awk '{print $3 " " $4}')
 check_lvm=$(lsblk | grep -q "lvm" && echo "yes" || echo "no")
+number_conection=$(ss -t | grep ESTAB | wc -l)
+users_log=$(users | wc -w)
+ipv4_address=$(hostname -I)
+mac_address=$(ip a | grep 'link/ether' | awk '{print($2)}')
 
 wall "
 	#Architecture : $architecture
@@ -22,4 +26,8 @@ wall "
 	#CPU Load : $cpu_load
 	#Last boot : $last_boot
 	#LVM use : $check_lvm
+	#Connections TCP : $number_conection ESTABLISHED
+	#User log : $users_log
+	#Network : IP $ipv4_address ($mac_address)
 "
+
